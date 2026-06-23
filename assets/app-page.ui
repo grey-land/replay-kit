@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+    <template class="ReplayViewPageBin" parent="GtkBox">
+
+                
+        <property name="orientation">horizontal</property>
+        <property name="spacing">24</property>
+
+        <child>
+            <object class="GtkCheckButton" id="check">
+                <property name="sensitive">false</property>
+                <style>
+                    <class name="selection-mode"/>
+                    <class name="small-button"/>
+                </style>
+            </object>
+        </child>
+   
+        <child>
+            <object class="GtkBox">
+                
+                <property name="orientation">vertical</property>
+                <property name="spacing">12</property>
+
+                <child>
+                    <object class="GtkLabel" id="title">
+                        <property name="valign">center</property>
+                        <property name="xalign">0</property>
+                        <style>
+                            <!-- <class name="label-badge"/> -->
+                        </style>
+                    </object>
+                </child>
+
+                <child>
+                    <object class="GtkLabel" id="subtitle">
+                        <property name="valign">center</property>
+                        <property name="xalign">0</property>
+                        <property name="ellipsize">end</property>
+                        <property name="hexpand">true</property>
+                        <style>
+                            <!-- <class name="display-name"/> -->
+                            <class name="caption"/>
+                            <class name="dimmed"/>
+                        </style>
+                    </object>
+                </child>
+
+            </object>
+        </child>
+
+        <child>
+            <object class="GtkLabel" id="date">
+                <property name="valign">center</property>
+                <property name="xalign">1</property>
+                <property name="sensitive">false</property>
+                <style>
+                    <class name="caption"/>
+                    <class name="dimmed"/>
+                </style>
+            </object>
+        </child>
+
+    </template>
+</interface>

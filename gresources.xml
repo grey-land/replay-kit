@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+    <gresource prefix="/io/gitlab/vgmkr/replay-view/">
+        <file>assets/sw.js</file>
+        <file>assets/ui.js</file>
+        <file preprocess="xml-stripblanks">assets/app-window.ui</file>
+        <file preprocess="xml-stripblanks">assets/app-page.ui</file>
+    </gresource>
+</gresources>

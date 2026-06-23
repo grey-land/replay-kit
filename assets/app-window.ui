@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+    
+    <menu id="primary_menu">
+        <item>
+            <attribute name="label">Open File</attribute>
+            <attribute name='action'>win.open-file</attribute>
+        </item>
+        <item>
+            <attribute name="label">Quit</attribute>
+            <attribute name='action'>app.quit</attribute>
+        </item>
+    </menu>
+
+    <template class="ReplayViewWindow" parent="AdwApplicationWindow">
+
+        <property name="content">
+            <object class="AdwBottomSheet" id="bottomsheet">
+                
+                <!-- Bottom Bar (visible by default) -->
+                <property name="bottom_bar">
+                    <!--
+                    <object class="GtkOverlay">
+                        <property name="hexpand">true</property>
+                        <child type="overlay">
+                            <object class="GtkProgressBar" id="progress_bar">
+                                <property name="valign">start</property>
+                                <style>
+                                    <class name="osd" />
+                                </style>
+                            </object>
+                        </child>                       
+                        <child>
+                    -->
+                            <object class="GtkActionBar">
+                                <child type="start">
+                                    <object class="GtkLabel" id="report_label">
+                                        <property name="wrap">true</property>
+                                        <property name="wrap_mode">char</property>
+                                        <property name="width_chars">100</property>
+                                        <property name="max_width_chars">150</property>
+                                        <property name="xalign">0</property>
+                                        <property name="ellipsize">end</property>
+                                        <style>
+                                            <class name="dimmed"/>
+                                            <class name="monospace"/>
+                                            <class name="caption"/>
+                                        </style>
+                                    </object>
+                                </child>
+                                <child type="end">
+                                    <object class="GtkButton">
+                                        <property name="icon-name">document-open-symbolic</property>
+                                        <property name="tooltip-text" translatable="yes">Open Archive</property>
+                                        <signal name="clicked" handler="request_file_open" />
+                                    </object>
+                                </child>
+                                <child type="end">
+                                    <object class="GtkToggleButton" id="show_sidebar_button">
+                                        <property name="icon-name">view-list-symbolic</property>
+                                        <property name="tooltip-text" translatable="yes">List Archive</property>
+                                        <property name="active">false</property>
+                                        <property name="valign">center</property>
+                                    </object>
+                                </child>
+                            </object>
+                    <!--
+                        </child>
+                    </object>
+                    -->
+                </property> 
+             
+                <!-- Bottom Sheet ( invisible by default ) -->
+                <property name="sheet">
+                    <object class="GtkScrolledWindow" id="list_scroll">
+                        <style>
+                            <class name="background"/>
+                        </style>
+                        <property name="child">
+                            <object class="AdwClamp">
+                                <property name="valign">center</property>
+                                <property name="child">
+                                    <object class="GtkListView" id="listview">
+                                        <property name="orientation">vertical</property>
+                                        <property name="tab_behavior">item</property>
+                                        <property name="show_separators">true</property>
+                                        <property name="factory">
+                                            <object class="GtkSignalListItemFactory" id="factory">
+                                                <signal name="bind"     handler="on_page_bind" />
+                                                <signal name="teardown" handler="on_page_teardown" />
+                                            </object>
+                                        </property>
+                                        <property name="model">
+                                            <object class="GtkSingleSelection" id="selection">
+                                                <signal name="selection_changed" handler="on_page_select" />
+                                            </object>
+                                        </property>
+                                        <!-- <property name="single_click_activate">true</property> -->
+                                        <!-- <signal name="activate" handler="on_page_activate" /> -->
+                                        <style>
+                                            <class name="navigation-sidebar"/>
+                                            <class name="background"/>
+                                        </style>
+                                    </object>
+                                </property>
+                            </object>
+                        </property>
+                    </object>
+                </property>
+
+
+                <!-- Main content -->
+                <property name="content">
+
+                    <object class="AdwToolbarView" id="toolbar" >
+
+                        <child type="top">
+                            <object class="AdwBanner" id="banner" />
+                        </child>
+
+                        <child type="top">
+                            <object class="AdwHeaderBar" id="headerbar">
+                                <!-- 
+                                <child type="end">
+                                    <object class="GtkMenuButton" id="menu_btn">
+                                        <property name="visible">false</property>
+
+                                        <property name="icon-name">open-menu-symbolic</property>
+                                        <property name="tooltip-text" translatable="yes">Main Menu</property>
+                                        <property name="primary">true</property>
+                                        <property name="popover">
+                                            <object class="GtkPopoverMenu" id="menu_popover">
+                                                <property name="autohide">true</property>
+                                                <property name="flags">nested</property>
+                                                <property name="menu-model">primary_menu</property>
+                                            </object>
+                                        </property>
+                                    </object>
+                                </child> 
+                                -->
+                                
+                            </object>
+                        </child>
+                    </object>
+                </property>
+
+                <!-- configure bottom sheet behaviour -->
+                <!-- <property name="modal">true</property> -->
+                <property name="modal">false</property>
+                <property name="show_drag_handle">false</property>
+                <property name="reveal_bottom_bar">true</property>
+
+                <property name="open"
+                        bind-source="show_sidebar_button"
+                        bind-property="active"
+                        bind-flags="sync-create|bidirectional"/>
+                
+            </object>
+        </property>
+    
+        
+    </template>
+</interface>
