@@ -1,0 +1,37 @@
+app-id: io.gitlab.vgmkr.replay-kit
+runtime: org.gnome.Platform
+runtime-version: '48'
+sdk: org.gnome.Sdk
+command: replay-kit
+finish-args:
+  - --share=network
+  - --share=ipc # Share IPC namespace with the host
+  - --socket=fallback-x11
+  - --device=dri # OpenGL rendering
+  - --socket=pulseaudio
+  - --socket=wayland
+build-options:
+  append-path: /usr/lib/sdk/vala/bin
+  prepend-ld-library-path: /usr/lib/sdk/vala/lib
+cleanup:
+  - /include
+  - /lib/pkgconfig
+  - /man
+  - /share/doc
+  - /share/gtk-doc
+  - /share/man
+  - /share/pkgconfig
+  - /share/vala
+  - '*.la'
+  - '*.a'
+modules:
+  - name: replay-kit
+    builddir: true
+    buildsystem: simple
+    build-commands:
+        - make build/replay-kit
+        - mkdir -p /app/bin
+        - install -m 755 build/replay-kit /app/bin/replay-kit
+    sources:
+      - type: dir
+        path: .

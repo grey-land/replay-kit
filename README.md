@@ -19,11 +19,15 @@ Makes use of [replayweb.page](https://replayweb.page/docs/embedding/) and WebKit
 
 </br>
 
-## Complile & Install
+## Install
 
-At the moment no binaries or flatpak are provided. 
+At the moment no pre-binaries or flathub package are provided. 
 
-To compile and install `make` and `valac` compiler are used. 
+You can either compile & install on your desktop or as flatpak.
+
+### Compile & Install on host
+
+To compile and install on desktop `make` and `valac` compiler are used. 
 
 ```bash
 # Compile application
@@ -39,3 +43,14 @@ make
 sudo make install
 ```
 
+### Build & Install flatpak
+
+To build flatpak `make`, `flatpak` and `flatpak-builder` are used.
+ 
+```bash
+# Build and install flatpak  
+make flatpak-install 
+
+# Run flatpak  
+flatpak run io.gitlab.vgmkr.replay-kit
+```

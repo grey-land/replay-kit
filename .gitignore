@@ -1,4 +1,7 @@
 ._*
 archives/*
+!archives/example.wacz
+
 build/
 webkit-*.vala
+.flatpak-builder
