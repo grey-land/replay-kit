@@ -1,8 +1,8 @@
 
-namespace ReplayView {
+namespace Replay {
 
-    [GtkTemplate (ui = "/io/gitlab/vgmkr/replay-view/assets/app-page.ui")]
-    public class PageBin : Gtk.Box {
+    [GtkTemplate (ui = "/io/gitlab/vgmkr/replay-kit/assets/app-page.ui")]
+    class PageBin : Gtk.Box {
         
         [GtkChild] private unowned Gtk.CheckButton check;
         [GtkChild] private unowned Gtk.Label title;
@@ -25,7 +25,7 @@ namespace ReplayView {
 
     }
 
-    [GtkTemplate (ui = "/io/gitlab/vgmkr/replay-view/assets/app-window.ui")]
+    [GtkTemplate (ui = "/io/gitlab/vgmkr/replay-kit/assets/app-window.ui")]
     public class Window : Adw.ApplicationWindow {
         
         public WaczPage page { 
@@ -51,11 +51,6 @@ namespace ReplayView {
         [GtkChild] private unowned Adw.BottomSheet bottomsheet;
         [GtkChild] private unowned Gtk.ScrolledWindow list_scroll;
 
-        
-        //  [GtkChild] private unowned Gtk.ScrolledWindow scroll;
-        //  [GtkChild] private unowned Gtk.Label title_label;
-
-        // bind list of pages included in wacz
         public void set_pages(GLib.ListModel? model) {
             selection.set_model( model );
         }
@@ -226,24 +221,25 @@ namespace ReplayView {
         
     }
 
-    
-            
+    /**
+     * Application to replay web archives.
+     */     
     public class App : Adw.Application {
 
-        private ReplayServer server;
-        private int server_port = 3000; // TODO: use 0 for random port
+        private Server server;
+        private int server_port = 0; // use 0 for random port
         
         public App() {
             Object (
-                application_id: "io.gitlab.vgmkr.replay-view",
-                resource_base_path: "/io/gitlab/vgmkr/replay-view",
+                application_id: "io.gitlab.vgmkr.replay-kit",
+                resource_base_path: "/io/gitlab/vgmkr/replay-kit",
                 flags: ApplicationFlags.HANDLES_OPEN
             );
-            server = new ReplayServer();
+            server = new Server();
             server.bind( server_port );
         }
         
-        public WaczFile add_archive(GLib.File file) {
+        public WaczFile add_archive(GLib.File file) throws Error {
             return server.add_archive(file);
         }
 
@@ -272,7 +268,7 @@ namespace ReplayView {
     }
 
     public static int main (string[] args) {
-        var app = new ReplayView.App();
+        var app = new App();
         return app.run(args);
     }
 

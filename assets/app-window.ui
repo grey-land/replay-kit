@@ -12,7 +12,7 @@
         </item>
     </menu>
 
-    <template class="ReplayViewWindow" parent="AdwApplicationWindow">
+    <template class="ReplayWindow" parent="AdwApplicationWindow">
 
         <property name="content">
             <object class="AdwBottomSheet" id="bottomsheet">

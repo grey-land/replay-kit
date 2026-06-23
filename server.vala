@@ -1,15 +1,51 @@
-namespace ReplayView {
+namespace Replay {
     
     /**
-	 * ReplayServer
-	 *
-	 * In wacz file mode, it will serve wabac service worker
-	 * (https://github.com/webrecorder/wabac.js/blob/main/dist/sw.js) and a
-	 * replay.html where it redisters the service worker and helper functions
-	 * to interact with wacz files.
-	 *
+	 * Serve Web Archives
+	 * 
+     * An lightweight http server build on top of {@link Soup.Server}, that
+     * embeeds [[https://replayweb.page/docs/embedding/|replayweb.page]] to serve Web Archives (Wacz format).
+     * It may be used from {@link WebKit.WebView} or any other browser to render wacz files.
+     * 
+     * == Example Usage ==
+     *
+     * {{{
+     *
+     *  // Create server
+     *  var server = new Server();
+     *
+     *  // Bind server on localhost using random port 
+     *  server.bind(0);
+     *
+     *  // Load wacz archive
+     *  archive = server.add_archive( GLib.File.new_for_path("example.wacz") );
+     *
+     *  // Get first page
+     *  var page = archive.get_page(0)
+     *
+     *  // Open url to render first page of imported archive  
+     *  stdout.printf( "Open Url: %s\n", page.reverse() );
+     *
+     * }}}
+     * 
+     * == Routes ==
+     *
+     * {@link Replay.Server} once instantiated, will register following routes
+     *
+     *  1. __/sw.js__ - serving replayweb.page service worker
+     *  1. __/ui.js__ - serving replayweb.page ui
+     *  1. __/archive/<archive id>__ - serving wacz files
+     *  1. __/page/<archive id>/<page id>__ - serving page part of wacz file
+     *
+     * First 3 routes use {@link Replay.Server.set_file_response} to serve the file content, 
+     * utilizing [[https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Range_requests|HTTP range requests]].
+     * This is important for /archive/<archive id> route as replayweb.page client will make HTTP range requests, 
+     * to load partial content from wacz files. 
+     * The last route will generate an html response (depends on the first 3 routes), 
+     * and will render the requested page of and archive, based on <page id> and <archive id>.
+     *
 	 */
-	public class ReplayServer : Soup.Server {
+	public class Server : Soup.Server {
         
         private GLib.ListStore _archives;
         private string _base_uri = "";
@@ -45,7 +81,7 @@ namespace ReplayView {
             </html>
             """;
         
-        public ReplayServer() {
+        public Server() {
             _archives = new GLib.ListStore( typeof(WaczFile) );
 			
             // serve static files
@@ -109,7 +145,7 @@ namespace ReplayView {
                 listen_local (port, Soup.ServerListenOptions.IPV4_ONLY);
                 foreach (Uri uri in get_uris ())
                     _base_uri = uri.to_string ();
-                message ("[ReplayServer] Listen on %s", _base_uri);
+                message ("[Server] Listen on %s", _base_uri);
                 return true;
             } catch (GLib.Error e) {
                 warning (e.message);
@@ -128,7 +164,7 @@ namespace ReplayView {
         private void handle_static(Soup.Server server, Soup.ServerMessage msg, string path, GLib.HashTable<string, string>? query) {
             set_file_response(msg, 
                 File.new_for_uri(
-                    "resource://io/gitlab/vgmkr/replay-view/assets/%s".printf(path.substring(1))));
+                    "resource://io/gitlab/vgmkr/replay-kit/assets/%s".printf(path.substring(1))));
         }
 
         private void handle_archive(Soup.Server server, Soup.ServerMessage msg, string path, GLib.HashTable<string, string>? query) {

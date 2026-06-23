@@ -1,4 +1,4 @@
-namespace ReplayView {
+namespace Replay {
     
     public class WaczPage : GLib.Object {
 
@@ -40,14 +40,14 @@ namespace ReplayView {
         }
         
 		/**
-		 * Get id of {@link ReplayView.WaczFile}. 
+		 * Get id of {@link Replay.WaczFile}. 
 		 */
 		public string get_id () {
 			return file.get_basename().split(".")[0].replace(" ", "");
 		}
 
 		/**
-		 * Get url where {@link ReplayView.WaczFile} will be served (localhost).
+		 * Get url where {@link Replay.WaczFile} will be served (localhost).
 		 */
 		public string reverse() {
 			return "%s/%s".printf( base_uri, get_id() );
@@ -91,8 +91,8 @@ namespace ReplayView {
 		/**
 		 * Load pages of wacz archive.
 		 * 
-		 * Iterates through {@link ReplayView.WaczFile.file} archive, until *pages/pages.jsonl* is found. 
-		 * Parse each line, and fills {@link ReplayView.WaczFile.pages} with {@link ReplayView.WaczPage} items.   
+		 * Iterates through {@link Replay.WaczFile.file} archive, until *pages/pages.jsonl* is found. 
+		 * Parse each line, and fills {@link Replay.WaczFile.pages} with {@link Replay.WaczPage} items.   
 		 */
 		public void parse_pages () throws Error {
 
